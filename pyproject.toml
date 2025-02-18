@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "rag_over_code"
+version = "0.1.0"
+description = "A Retrieval-Augmented Generation (RAG) framework for code understanding and analysis"
+authors = ["shan0199 <shantanumoradabad@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+langchain = "0.3.18"
+qdrant-client = "1.12.0"
+transformers = "^4.48.3"
+accelerate = "^1.3.0"
+sentence-transformers = "^3.4.1"
+langchainhub = "^0.1.21"
+langchain-community = "^0.3.17"
+gradio = "^5.16.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
