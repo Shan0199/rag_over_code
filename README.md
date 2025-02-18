@@ -14,7 +14,7 @@ RAG Over Code is a powerful framework that leverages **LangChain**, **Transforme
 ## 🛠️ Installation  
 Clone the repository and install dependencies using Poetry:  
 ```bash
-git clone https://github.com/yourusername/rag-over-code.git  
+https://github.com/Shan0199/rag_over_code.git  
 cd rag-over-code  
 poetry install
 ```
