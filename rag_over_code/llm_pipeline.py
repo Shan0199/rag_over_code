@@ -1,17 +1,21 @@
 import logging
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from transformers import (AutoModelForCausalLM,
+                          AutoTokenizer,
+                          pipeline,
+                          BitsAndBytesConfig)
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 from langchain.chains import RetrievalQA
 import torch
 
 def setup_llm(model_name: str, max_length: int, temperature: float) -> HuggingFacePipeline:
     """Load a language model and create a text generation pipeline with reduced memory usage."""
+    quantization_config = BitsAndBytesConfig(load_in_8bit=True)
     device = 0 if torch.cuda.is_available() else -1  # Use GPU if available
     if not device:
         logging.info("Running LLM on GPU")
     else:
         logging.warning("Running LLM on  CPU")
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, quantization_config=quantization_config)
 
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
