@@ -28,7 +28,7 @@ def setup_llm(model_name: str, max_length: int, temperature: float) -> HuggingFa
         "text-generation",
         model=model,
         tokenizer=tokenizer,
-        device=device,
+        # device=device,
         model_kwargs={"max_length": max_length, "temperature": temperature}
     )
 
