@@ -1,8 +1,16 @@
 import argparse
+import logging
 from data_processing import setup_documents
 from vector_store import setup_vectorstore
 from llm_pipeline import setup_llm, setup_qa_chain
 from interface import launch_gradio_interface
+
+# Setup logging
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(description="Run the Codebase Q&A with RAG pipeline.")
@@ -17,13 +25,30 @@ def main():
     
     args = parser.parse_args()
     
-    # Setup components
-    docs = setup_documents(args.src_dir, args.dst_dir, args.chunk_size, args.chunk_overlap)
-    qdrant = setup_vectorstore(docs, args.embed_model)
-    llm = setup_llm(args.llm_model, args.max_length, args.temperature)
-    qa_chain = setup_qa_chain(llm, qdrant)
+    logger.info("🔍 Starting the Codebase Q&A RAG pipeline...")
 
-    # Launch the Gradio interface
+    # Setup documents
+    logger.info("📂 Processing documents...")
+    docs = setup_documents(args.src_dir, args.dst_dir, args.chunk_size, args.chunk_overlap)
+    logger.info(f"✅ Processed {len(docs)} documents.")
+
+    # Setup vector store
+    logger.info("📡 Initializing Qdrant vector store...")
+    qdrant = setup_vectorstore(docs, args.embed_model)
+    logger.info("✅ Qdrant vector store initialized.")
+
+    # Setup LLM
+    logger.info(f"🧠 Loading LLM: {args.llm_model}")
+    llm = setup_llm(args.llm_model, args.max_length, args.temperature)
+    logger.info("✅ LLM loaded successfully.")
+
+    # Setup QA chain
+    logger.info("🔗 Creating QA chain...")
+    qa_chain = setup_qa_chain(llm, qdrant)
+    logger.info("✅ QA chain setup complete.")
+
+    # Launch UI
+    logger.info("🚀 Launching Gradio interface...")
     launch_gradio_interface(qa_chain)
 
 if __name__ == "__main__":
